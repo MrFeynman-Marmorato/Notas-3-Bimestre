@@ -57,9 +57,9 @@
                         document.getElementById("resultado").innerHTML = `
                             <p>Nota 1: ${data.nota1}</p>
                             <p>Nota 2: ${data.nota2}</p>
-                            <p>Nota 3: ${data.nota3}</p>
-                            <p>Nota 4: ${data.nota4}</p>
-                            <p>Nota 5: ${data.nota5}</p>
+                            <p>Tarefas: ${data.nota3}</p>
+                            <p>Prova Paulista: ${data.nota4}</p>
+                            <p>Khan Academy: ${data.nota5}</p>
                             <p>Média Final: ${data.media}</p>
                         `;
                     }
@@ -67,6 +67,12 @@
                 .catch(error => {
                     console.error('Erro ao consultar as notas:', error);
                     document.getElementById("resultado").innerText = "Erro ao consultar as notas.";
+                });
+        }
+    </script>
+</body>
+</html>
+
                 });
         }
     </script>
