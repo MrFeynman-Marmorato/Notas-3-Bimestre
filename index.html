@@ -40,7 +40,7 @@
         <div id="resultado"></div>
     </div>
     <script>
-        const urlAPI = "https://script.google.com/macros/s/AKfycbwSdd0CmOiysErPLb8p6bbyBw6kEE7GaBDpcRTfV1oY93z-T7KaqDAudVq1TAyb4U5z/exec"; // URL do script implantado
+        const urlAPI = "https://script.google.com/macros/s/AKfycbw8a8KyJTccjfzkj3b22kVXTOi75t7Dge8DcxkTpQ_vOHdk5DR5ali_uOsIN3aR5dAk/exec"; // URL do script implantado
 
         function consultarNota() {
             const serie = document.getElementById("serie").value;
@@ -67,12 +67,6 @@
                 .catch(error => {
                     console.error('Erro ao consultar as notas:', error);
                     document.getElementById("resultado").innerText = "Erro ao consultar as notas.";
-                });
-        }
-    </script>
-</body>
-</html>
-
                 });
         }
     </script>
