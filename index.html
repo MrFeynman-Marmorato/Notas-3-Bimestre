@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Notas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Consulta de Notas do Aluno</h1>
+        <form id="notaForm">
+            <label for="serie">Série:</label>
+            <select id="serie" name="serie" required>
+                <option value="FÍS 1ºA">Física 1ºA</option>
+                <option value="FÍS 1ºB">Física 1ºB</option>
+                <option value="FÍS 2ºA">Física 2ºA</option>
+                <!-- <option value="FÍS 2ºB">FÍS 2ºB</option>
+                <option value="FÍS 3ºA">FÍS 3ºA</option>
+                <option value="FÍS 3ºB">FÍS 3ºB</option>
+                <option value="Tec 7ºA">Tec 7ºA</option>
+                <option value="Tec 8ºA">Tec 8ºA</option>
+                <option value="Tec 9ºA">Tec 9ºA</option>
+                <option value="Tec 9ºB">Tec 9ºB</option>
+                <option value="Tec 1ºA">Tec 1ºA</option>
+                <option value="Tec 1ºB">Tec 1ºB</option>
+                <option value="Tec 2ºA">Tec 2ºA</option>
+                <option value="Tec 3ºA">Tec 3ºA</option> -->
+            </select>
+            
+            <label for="registro">Registro do Aluno:</label>
+            <input type="text" id="registro" name="registro" required>
+            
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+            
+            <button type="button" onclick="consultarNota()">Consultar Notas</button>
+        </form>
+        <div id="resultado"></div>
+    </div>
+    <script>
+        const urlAPI = "https://script.google.com/macros/s/AKfycbwSdd0CmOiysErPLb8p6bbyBw6kEE7GaBDpcRTfV1oY93z-T7KaqDAudVq1TAyb4U5z/exec"; // URL do script implantado
+
+        function consultarNota() {
+            const serie = document.getElementById("serie").value;
+            const registro = document.getElementById("registro").value;
+            const senha = document.getElementById("senha").value;
+
+            fetch(`${urlAPI}?serie=${encodeURIComponent(serie)}&registro=${registro}&senha=${senha}`)
+                .then(response => response.json()) // Converte a resposta para JSON
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById("resultado").innerText = `Erro: ${data.error}`;
+                    } else {
+                        // Exibe as notas e a média
+                        document.getElementById("resultado").innerHTML = `
+                            <p>Nota 1: ${data.nota1}</p>
+                            <p>Nota 2: ${data.nota2}</p>
+                            <p>Nota 3: ${data.nota3}</p>
+                            <p>Nota 4: ${data.nota4}</p>
+                            <p>Nota 5: ${data.nota5}</p>
+                            <p>Média Final: ${data.media}</p>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao consultar as notas:', error);
+                    document.getElementById("resultado").innerText = "Erro ao consultar as notas.";
+                });
+        }
+    </script>
+</body>
+</html>
