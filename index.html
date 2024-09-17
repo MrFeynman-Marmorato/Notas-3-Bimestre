@@ -11,36 +11,56 @@
     <div class="container">
         <h1>Consulta de Notas do Aluno</h1>
         <form id="notaForm">
-            <label for="serie">Série:</label>
-            <select id="serie" name="serie" required>
-                <option value="FÍS 1ºA">Física 1ºA</option>
-                <option value="FÍS 1ºB">Física 1ºB</option>
-                <option value="FÍS 2ºA">Física 2ºA</option>
-                <!-- <option value="FÍS 2ºB">Física 2ºB</option>
-                <option value="FÍS 3ºA">Física 3ºA</option>
-                <option value="FÍS 3ºB">Física 3ºB</option>
-                <option value="Tec 7ºA">Tecnologia 7ºA</option>
-                <option value="Tec 8ºA">Tecnologia 8ºA</option>
-                <option value="Tec 9ºA">Tecnologia 9ºA</option>
-                <option value="Tec 9ºB">Tecnologia 9ºB</option>
-                <option value="Tec 1ºA">Tecnologia 1ºA</option>
-                <option value="Tec 1ºB">Tecnologia 1ºB</option>
-                <option value="Tec 2ºA">Tecnologia 2ºA</option>
-                <option value="Tec 3ºA">Tecnologia 3ºA</option> -->
-            </select>
+            <div class="form-group">
+                <label for="serie">Série:</label>
+                <select id="serie" name="serie" required>
+                    <option value="FÍS 1ºA">Física 1ºA</option>
+                    <option value="FÍS 1ºB">Física 1ºB</option>
+                    <option value="FÍS 2ºA">Física 2ºA</option>
+                    <!-- <option value="FÍS 2ºB">Física 2ºB</option>
+                    <option value="FÍS 3ºA">Física 3ºA</option>
+                    <option value="FÍS 3ºB">Física 3ºB</option>
+                    <option value="Tec 7ºA">Tecnologia 7ºA</option>
+                    <option value="Tec 8ºA">Tecnologia 8ºA</option>
+                    <option value="Tec 9ºA">Tecnologia 9ºA</option>
+                    <option value="Tec 9ºB">Tecnologia 9ºB</option>
+                    <option value="Tec 1ºA">Tecnologia 1ºA</option>
+                    <option value="Tec 1ºB">Tecnologia 1ºB</option>
+                    <option value="Tec 2ºA">Tecnologia 2ºA</option>
+                    <option value="Tec 3ºA">Tecnologia 3ºA</option> -->
+                </select>
+            </div>
             
-            <label for="registro">Registro do Aluno:</label>
-            <input type="text" id="registro" name="registro" required>
+            <div class="form-group">
+                <label for="registro">Registro do Aluno:</label>
+                <input type="text" id="registro" name="registro" required>
+            </div>
             
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" required>
-            
-            <button type="button" onclick="consultarNota()">Consultar Notas</button>
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" required>
+                <label for="showPassword">
+                    <input type="checkbox" id="showPassword" onclick="togglePassword()"> Mostrar Senha
+                </label>
+            </div>
+
+            <button type="button" class="submit-btn" onclick="consultarNota()">Consultar Notas</button>
         </form>
-        <div id="resultado"></div>
+
+        <div id="resultado" class="resultado"></div>
     </div>
+
     <script>
         const urlAPI = "https://script.google.com/macros/s/AKfycbwLoHKNNSVhHMfXKFLgStPJlVFwi9f4y-1_daHoTocRzsDftRTeYa6GTk4W50bME8sj/exec"; // URL do script implantado
+
+        function togglePassword() {
+            const passwordField = document.getElementById('senha');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+            } else {
+                passwordField.type = 'password';
+            }
+        }
 
         function consultarNota() {
             const serie = document.getElementById("serie").value;
@@ -55,7 +75,9 @@
 
                     if (data.error) {
                         resultadoDiv.innerText = `Erro: ${data.error}`;
+                        resultadoDiv.classList.add('error');
                     } else {
+                        resultadoDiv.classList.remove('error');
                         // Exibe as notas dinamicamente
                         for (let key in data) {
                             let notaElement = document.createElement("p");
@@ -67,6 +89,12 @@
                 .catch(error => {
                     console.error('Erro ao consultar as notas:', error);
                     document.getElementById("resultado").innerText = "Erro ao consultar as notas.";
+                });
+        }
+    </script>
+</body>
+</html>
+
                 });
         }
     </script>
