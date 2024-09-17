@@ -16,17 +16,17 @@
                 <option value="FÍS 1ºA">Física 1ºA</option>
                 <option value="FÍS 1ºB">Física 1ºB</option>
                 <option value="FÍS 2ºA">Física 2ºA</option>
-                <!-- <option value="FÍS 2ºB">FÍS 2ºB</option>
-                <option value="FÍS 3ºA">FÍS 3ºA</option>
-                <option value="FÍS 3ºB">FÍS 3ºB</option>
-                <option value="Tec 7ºA">Tec 7ºA</option>
-                <option value="Tec 8ºA">Tec 8ºA</option>
-                <option value="Tec 9ºA">Tec 9ºA</option>
-                <option value="Tec 9ºB">Tec 9ºB</option>
-                <option value="Tec 1ºA">Tec 1ºA</option>
-                <option value="Tec 1ºB">Tec 1ºB</option>
-                <option value="Tec 2ºA">Tec 2ºA</option>
-                <option value="Tec 3ºA">Tec 3ºA</option> -->
+                <!-- <option value="FÍS 2ºB">Física 2ºB</option>
+                <option value="FÍS 3ºA">Física 3ºA</option>
+                <option value="FÍS 3ºB">Física 3ºB</option>
+                <option value="Tec 7ºA">Tecnologia 7ºA</option>
+                <option value="Tec 8ºA">Tecnologia 8ºA</option>
+                <option value="Tec 9ºA">Tecnologia 9ºA</option>
+                <option value="Tec 9ºB">Tecnologia 9ºB</option>
+                <option value="Tec 1ºA">Tecnologia 1ºA</option>
+                <option value="Tec 1ºB">Tecnologia 1ºB</option>
+                <option value="Tec 2ºA">Tecnologia 2ºA</option>
+                <option value="Tec 3ºA">Tecnologia 3ºA</option> -->
             </select>
             
             <label for="registro">Registro do Aluno:</label>
@@ -40,7 +40,7 @@
         <div id="resultado"></div>
     </div>
     <script>
-        const urlAPI = "https://script.google.com/macros/s/AKfycbw8a8KyJTccjfzkj3b22kVXTOi75t7Dge8DcxkTpQ_vOHdk5DR5ali_uOsIN3aR5dAk/exec"; // URL do script implantado
+        const urlAPI = "https://script.google.com/macros/s/AKfycbwLoHKNNSVhHMfXKFLgStPJlVFwi9f4y-1_daHoTocRzsDftRTeYa6GTk4W50bME8sj/exec"; // URL do script implantado
 
         function consultarNota() {
             const serie = document.getElementById("serie").value;
@@ -50,18 +50,18 @@
             fetch(`${urlAPI}?serie=${encodeURIComponent(serie)}&registro=${registro}&senha=${senha}`)
                 .then(response => response.json()) // Converte a resposta para JSON
                 .then(data => {
+                    let resultadoDiv = document.getElementById("resultado");
+                    resultadoDiv.innerHTML = ''; // Limpa o resultado anterior
+
                     if (data.error) {
-                        document.getElementById("resultado").innerText = `Erro: ${data.error}`;
+                        resultadoDiv.innerText = `Erro: ${data.error}`;
                     } else {
-                        // Exibe as notas e a média
-                        document.getElementById("resultado").innerHTML = `
-                            <p>Nota 1: ${data.nota1}</p>
-                            <p>Nota 2: ${data.nota2}</p>
-                            <p>Tarefas: ${data.nota3}</p>
-                            <p>Prova Paulista: ${data.nota4}</p>
-                            <p>Khan Academy: ${data.nota5}</p>
-                            <p>Média Final: ${data.media}</p>
-                        `;
+                        // Exibe as notas dinamicamente
+                        for (let key in data) {
+                            let notaElement = document.createElement("p");
+                            notaElement.innerText = `${key}: ${data[key]}`;
+                            resultadoDiv.appendChild(notaElement);
+                        }
                     }
                 })
                 .catch(error => {
