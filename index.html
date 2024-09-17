@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Notas</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -39,9 +39,10 @@
             <div class="form-group">
                 <label for="senha">Senha:</label>
                 <input type="password" id="senha" name="senha" required>
-                <label for="showPassword">
-                    <input type="checkbox" id="showPassword" onclick="togglePassword()"> Mostrar Senha
-                </label>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="showPassword" onclick="togglePassword()">
+                    <label for="showPassword" class="checkbox-label">Mostrar Senha</label>
+                </div>
             </div>
 
             <button type="button" class="submit-btn" onclick="consultarNota()">Consultar Notas</button>
@@ -62,39 +63,47 @@
             }
         }
 
+         // Função para consultar as notas e exibir o resultado
         function consultarNota() {
             const serie = document.getElementById("serie").value;
             const registro = document.getElementById("registro").value;
             const senha = document.getElementById("senha").value;
 
-            fetch(`${urlAPI}?serie=${encodeURIComponent(serie)}&registro=${registro}&senha=${senha}`)
+            // Fazendo a requisição para o Google Apps Script
+            fetch(`${urlAPI}?serie=${encodeURIComponent(serie)}&registro=${encodeURIComponent(registro)}&senha=${encodeURIComponent(senha)}`)
                 .then(response => response.json()) // Converte a resposta para JSON
                 .then(data => {
                     let resultadoDiv = document.getElementById("resultado");
                     resultadoDiv.innerHTML = ''; // Limpa o resultado anterior
 
+                    // Verifica se houve erro na consulta
                     if (data.error) {
                         resultadoDiv.innerText = `Erro: ${data.error}`;
                         resultadoDiv.classList.add('error');
+                        resultadoDiv.style.display = 'block'; // Mostra o container de erro
                     } else {
                         resultadoDiv.classList.remove('error');
-                        // Exibe as notas dinamicamente
+                        resultadoDiv.style.display = 'block'; // Mostra o container de resultado
+
+                        // Exibe as notas dinamicamente com 2 casas decimais
                         for (let key in data) {
                             let notaElement = document.createElement("p");
-                            notaElement.innerText = `${key}: ${data[key]}`;
+                            if (key.includes("Média")) {
+                                // Arredondar a média para o inteiro mais próximo
+                                notaElement.innerText = `${key}: ${Math.round(data[key])}`;
+                            } else {
+                                // Exibir as notas com 2 casas decimais
+                                notaElement.innerText = `${key}: ${parseFloat(data[key]).toFixed(2)}`;
+                            }
                             resultadoDiv.appendChild(notaElement);
                         }
                     }
                 })
                 .catch(error => {
                     console.error('Erro ao consultar as notas:', error);
-                    document.getElementById("resultado").innerText = "Erro ao consultar as notas.";
-                });
-        }
-    </script>
-</body>
-</html>
-
+                    let resultadoDiv = document.getElementById("resultado");
+                    resultadoDiv.innerText = "Erro ao consultar as notas.";
+                    resultadoDiv.style.display = 'block'; // Mostra o container de erro
                 });
         }
     </script>
